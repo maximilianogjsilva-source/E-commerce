@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  app_carpincho:
+    build: .
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://eccomerce_api:3306/carpincho?createDatabaseIfNotExist=true&serverTimezone=UTC
+      DB_USER_NAME: myuser
+      DB_PASSWORD: 1234
+    restart: always
+    depends_on:
+      eccomerce_api:
+        condition: service_healthy
+  eccomerce_api:
+    image: mysql:9.4.0
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: 1234
+      MYSQL_DATABASE: carpincho
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+    volumes:
+      - mysql_eccomerce:/var/lib/mysql
+volumes:
+  mysql_eccomerce:
