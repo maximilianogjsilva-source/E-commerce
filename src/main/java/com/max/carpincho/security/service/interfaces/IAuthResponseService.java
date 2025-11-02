@@ -4,6 +4,8 @@ import com.max.carpincho.security.controller.dto.AuthCreateUserDevRequest;
 import com.max.carpincho.security.controller.dto.AuthUserRequest;
 import com.max.carpincho.security.controller.dto.AuthResponse;
 
+import java.util.List;
+
 public interface IAuthResponseService {
 
     AuthResponse createUserDev(AuthCreateUserDevRequest authCreateUserRequest);
@@ -11,5 +13,7 @@ public interface IAuthResponseService {
     AuthResponse loginUser(AuthUserRequest authUserRequest);
 
     AuthResponse createUser(AuthUserRequest authUserRequest);
+
+    List<String> setUp();
 
 }

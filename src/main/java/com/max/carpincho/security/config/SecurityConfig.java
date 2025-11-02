@@ -33,18 +33,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrf-> csrf.disable())
-                .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/auth/log-in").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/sign-up").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/sign-up-dev").hasAnyAuthority("REFACTOR")
-                        .requestMatchers(HttpMethod.GET, "/demo/list-items").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/demo/get-id/**").hasAnyAuthority("READ")
-                        .requestMatchers(HttpMethod.POST, "/demo/add-item").hasAnyAuthority("READ")
-                        .anyRequest().authenticated()
+//                        .requestMatchers(HttpMethod.POST, "/auth/log-in").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/auth/sign-up").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/auth/sign-up-dev").hasAnyAuthority("REFACTOR")
+//                        .requestMatchers(HttpMethod.GET, "/demo/list-items").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/demo/get-id/**").hasAnyAuthority("READ")
+//                        .requestMatchers(HttpMethod.POST, "/demo/add-item").hasAnyAuthority("READ")
+//                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 ).addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class);
 
 

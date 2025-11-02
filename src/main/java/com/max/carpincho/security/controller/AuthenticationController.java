@@ -35,4 +35,9 @@ public class AuthenticationController {
         return new ResponseEntity<AuthResponse>(authRessponseService.loginUser(authUserRequest) ,HttpStatus.OK);
     }
 
+    @PostMapping("/set-up")
+    public ResponseEntity<?> setUp(){
+        return ResponseEntity.ok(this.authRessponseService.setUp());
+    }
+
 }

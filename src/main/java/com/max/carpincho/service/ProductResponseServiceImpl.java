@@ -1,10 +1,12 @@
 package com.max.carpincho.service;
 
 import com.max.carpincho.controller.dto.ProductDTO;
+import com.max.carpincho.persistence.entity.Category;
+import com.max.carpincho.persistence.entity.Product;
 import com.max.carpincho.service.interfaces.ICategoryService;
 import com.max.carpincho.service.interfaces.IProductResponseService;
+import com.max.carpincho.service.interfaces.IProductService;
 import com.max.carpincho.service.util.ProductMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ import static com.max.carpincho.service.util.ProductMapper.*;
 public class ProductResponseServiceImpl implements IProductResponseService {
 
     @Autowired
-    private ProductService productService;
+    private IProductService productService;
 
     @Autowired
     private ICategoryService categoryService;
@@ -76,6 +78,71 @@ public class ProductResponseServiceImpl implements IProductResponseService {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @Override
+    public List<ProductDTO> setUp(){
+
+        			//Create CATEGORIES
+			Category clothes = Category.builder()
+					.nameCategory("clothes")
+					.build();
+			Category rare = Category.builder()
+					.nameCategory("rare")
+					.build();
+			Category special = Category.builder()
+					.nameCategory("special")
+					.build();
+			Category premium = Category.builder()
+					.nameCategory("premium")
+					.build();
+
+			//Create PRODUCTS
+			Product tShirt = Product.builder()
+					.title("T Shirt")
+					.srcImg("tshirt.jpg")
+					.description("Cotton Shirt")
+					.price(12500)
+					.categories(List.of(clothes, rare))
+					.build();
+			Product tShirtU = Product.builder()
+					.title("T Shirt University")
+					.srcImg("tshirtu.jpg")
+					.description("Cotton Shirt Sublimated")
+					.price(16000)
+					.categories(List.of(clothes, premium, special))
+					.build();
+			Product tShirtB = Product.builder()
+					.title("T Shirt Blue")
+					.srcImg("tshirtb.jpg")
+					.description("Blue Cotton Shirt")
+					.price(13500)
+					.categories(List.of(clothes, rare, special))
+					.build();
+			Product coat = Product.builder()
+					.title("Coat")
+					.srcImg("coat.jpg")
+					.description("Coat")
+					.price(15000)
+					.categories(List.of(clothes, rare))
+					.build();
+			Product coatC = Product.builder()
+					.title("Cotton Coat")
+					.srcImg("coatC.jpg")
+					.description("Cotton Coat")
+					.price(18000)
+					.categories(List.of(special, clothes))
+					.build();
+			Product shoe = Product.builder()
+					.title("Shoe sport")
+					.srcImg("shoe.jpg")
+					.description("Football Shoe")
+					.price(25000)
+					.categories(List.of(clothes, rare, special, premium))
+					.build();
+
+        return this.productService.saveAll(List.of(tShirt, tShirtB, tShirtU, coat, coatC, shoe))
+                .stream().map(ProductMapper::toProductDTO).toList();
     }
 
 

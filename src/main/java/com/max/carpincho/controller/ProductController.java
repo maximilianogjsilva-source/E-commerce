@@ -7,6 +7,7 @@ import com.max.carpincho.service.interfaces.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class ProductController {
     @Autowired
     private IProductResponseService responseService;
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/list-items")
     public ResponseEntity<List<ProductDTO>> listItems(){
         return ResponseEntity.ok(this.responseService.listAll());
@@ -28,8 +30,9 @@ public class ProductController {
 
     @PostMapping("/add-item")
     public ResponseEntity<ProductDTO> addItem(@RequestBody @Validated ProductDTO productDTO){
-        var prodDTO = this.responseService.saveProduct(productDTO);
-        return ResponseEntity.created(URI.create("/demo/get-id/"+prodDTO.id())).body(prodDTO);
+        return new ResponseEntity<>(this.responseService.saveProduct(productDTO), HttpStatus.CREATED);
+//        var prodDTO = this.responseService.saveProduct(productDTO);
+//        return ResponseEntity.created(URI.create("/demo/get-id/"+prodDTO.id())).body(prodDTO);
     }
 
     @GetMapping("/get-id/{id}")
@@ -46,6 +49,11 @@ public class ProductController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Integer id){
         return this.responseService.deleteProductById(id);
+    }
+
+    @PostMapping("/set-up")
+    public ResponseEntity<?> setUp(){
+        return ResponseEntity.ok(this.responseService.setUp());
     }
 
 }

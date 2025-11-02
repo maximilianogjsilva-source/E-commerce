@@ -1,6 +1,8 @@
 package com.max.carpincho.security.service;
 
+import com.max.carpincho.security.persistence.entity.PermissionEntity;
 import com.max.carpincho.security.persistence.entity.RoleEntity;
+import com.max.carpincho.security.persistence.entity.RoleEnum;
 import com.max.carpincho.security.persistence.entity.UserEntity;
 import com.max.carpincho.security.persistence.repository.UserEntityRepository;
 import com.max.carpincho.security.service.interfaces.IUserEntityService;
@@ -60,4 +62,89 @@ public class UserEntityServiceImpl implements IUserEntityService {
 
         return athorities;
     }
+
+    @Override
+    public List<UserEntity> setUp(){
+        			// Create PERMISSIONS
+			PermissionEntity createPermission = PermissionEntity.builder()
+					.name("CREATE").build();
+
+			PermissionEntity readPermission = PermissionEntity.builder()
+					.name("READ").build();
+
+			PermissionEntity updatePermission = PermissionEntity.builder()
+					.name("UPDATE").build();
+
+			PermissionEntity deletePermission = PermissionEntity.builder()
+					.name("DELETE").build();
+
+			PermissionEntity refactorPermission = PermissionEntity.builder()
+					.name("REFACTOR").build();
+
+			//Create ROLES
+			RoleEntity roleAdmin = RoleEntity.builder()
+					.roleEnum(RoleEnum.ADMIN)
+					.permissionList(Set.of(createPermission, readPermission, updatePermission, deletePermission))
+					.build();
+
+			RoleEntity roleUser = RoleEntity.builder()
+					.roleEnum(RoleEnum.USER)
+					.permissionList(Set.of(createPermission, readPermission))
+					.build();
+
+			RoleEntity roleInvited = RoleEntity.builder()
+					.roleEnum(RoleEnum.INVITED)
+					.permissionList(Set.of(readPermission))
+					.build();
+
+			RoleEntity roleDeveloper = RoleEntity.builder()
+					.roleEnum(RoleEnum.DEVELOPER)
+					.permissionList(Set.of(
+							createPermission, readPermission, updatePermission, deletePermission, refactorPermission))
+					.build();
+
+			//Create USERS
+			UserEntity userSantiago = UserEntity.builder()
+					.username("Santiago")
+					.password("$2a$10$VthJCDyMhW/HGFrW9G7tGOw0wYAhEdVlJ8XwLWh0Xgilz/KSYxkGC")
+					.isEnabled(true)
+					.accountNoExpired(true)
+					.accountNoLocked(true)
+					.credentialNoExpired(true)
+					.roles(Set.of(roleAdmin))
+					.build();
+
+			UserEntity userDaniel = UserEntity.builder()
+					.username("Daniel")
+					.password("$2a$10$VthJCDyMhW/HGFrW9G7tGOw0wYAhEdVlJ8XwLWh0Xgilz/KSYxkGC")
+					.isEnabled(true)
+					.accountNoExpired(true)
+					.accountNoLocked(true)
+					.credentialNoExpired(true)
+					.roles(Set.of(roleUser))
+					.build();
+
+			UserEntity userAndrea = UserEntity.builder()
+					.username("Andrea")
+					.password("$2a$10$VthJCDyMhW/HGFrW9G7tGOw0wYAhEdVlJ8XwLWh0Xgilz/KSYxkGC")
+					.isEnabled(true)
+					.accountNoExpired(true)
+					.accountNoLocked(true)
+					.credentialNoExpired(true)
+					.roles(Set.of(roleInvited))
+					.build();
+
+			UserEntity userAnyi = UserEntity.builder()
+					.username("Anyi")
+					.password("$2a$10$VthJCDyMhW/HGFrW9G7tGOw0wYAhEdVlJ8XwLWh0Xgilz/KSYxkGC")
+					.isEnabled(true)
+					.accountNoExpired(true)
+					.accountNoLocked(true)
+					.credentialNoExpired(true)
+					.roles(Set.of(roleDeveloper))
+					.build();
+
+			return userRepository.saveAll(List.of(userSantiago, userDaniel, userAndrea, userAnyi));
+    }
+
 }

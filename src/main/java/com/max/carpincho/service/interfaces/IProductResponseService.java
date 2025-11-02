@@ -17,4 +17,6 @@ public interface IProductResponseService {
 
     ResponseEntity<?> deleteProductById(Integer idProduct);
 
+    List<ProductDTO> setUp();
+
 }

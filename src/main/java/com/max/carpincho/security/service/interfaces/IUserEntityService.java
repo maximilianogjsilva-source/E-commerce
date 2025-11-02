@@ -18,4 +18,6 @@ public interface IUserEntityService {
 
     List<GrantedAuthority> getAuthorities(UserEntity userEntity);
 
+    List<UserEntity> setUp();
+
 }

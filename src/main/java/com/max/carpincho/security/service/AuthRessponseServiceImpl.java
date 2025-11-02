@@ -79,6 +79,10 @@ public class AuthRessponseServiceImpl implements IAuthResponseService {
                 true);
     }
 
+    @Override
+    public List<String> setUp(){
+        return this.userService.setUp().stream().map(UserEntity::getUsername).toList();
+    }
 
     private String authenticateUser(String username, String password) {
 
@@ -97,6 +101,5 @@ public class AuthRessponseServiceImpl implements IAuthResponseService {
         }
             return jwtUtils.createToken(authentication);
     }
-
 
 }

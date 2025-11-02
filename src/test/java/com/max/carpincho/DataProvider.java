@@ -23,6 +23,7 @@ public class DataProvider {
                 .title("Jean")
                 .srcImg("jean.jpg")
                 .description("Classic Jean")
+                .categories(List.of(new Category(1, "clothes")))
                 .price(20500).build();
     }
 
@@ -33,16 +34,19 @@ public class DataProvider {
                 .title("Jean")
                 .srcImg("jean.jpg")
                 .description("Classic Jean")
+                .categories(List.of(new Category(1, "clothes")))
                 .price(20500).build();
     }
 
     public static Product getNewProduct(){
         System.out.println("--> Devolviendo Optional<Product>/Mock ");
         return Product.builder()
+                .idProduct(null)
                 .title("Shirt")
                 .srcImg("shirt.jpg")
                 .description("Blue Shirt")
                 .price(7600)
+                .categories(List.of(new Category(1, "clothes")))
                 .build();
     }
 
@@ -54,6 +58,7 @@ public class DataProvider {
                 .srcImg("shirt.jpg")
                 .description("Blue Shirt")
                 .price(7600)
+                .categories(List.of(new Category(1, "clothes")))
                 .build();
     }
 
@@ -63,6 +68,7 @@ public class DataProvider {
                 .title("Jean Azul")
                 .srcImg("jeanaa.jpg")
                 .description("Classic Jean Azul")
+                .categories(List.of(new Category(1, "clothes")))
                 .price(21500).build();
     }
 
@@ -73,6 +79,7 @@ public class DataProvider {
                 .title("Jean Azul")
                 .srcImg("jeanaa.jpg")
                 .description("Classic Jean Azul")
+                .categories(List.of(new Category(1, "clothes")))
                 .price(21500).build();
     }
 

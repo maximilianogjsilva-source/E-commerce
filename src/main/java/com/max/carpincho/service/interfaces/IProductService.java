@@ -16,4 +16,6 @@ public interface IProductService {
 
     Boolean deleteProductById(Integer idProduct);
 
+    List<Product> saveAll(List<Product> products);
+
 }
