@@ -4,6 +4,7 @@ import com.max.carpincho.controller.dto.ProductDTO;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IProductResponseService {
 
@@ -11,11 +12,11 @@ public interface IProductResponseService {
 
     ProductDTO saveProduct(ProductDTO productDTO);
 
-    ProductDTO getById(Integer id);
+    Optional<ProductDTO> getById(Integer id);
 
     ProductDTO editProduct(Integer idProduct, ProductDTO newProductDTO);
 
-    ResponseEntity<?> deleteProductById(Integer idProduct);
+    Optional<ProductDTO> deleteProductById(Integer idProduct);
 
     List<ProductDTO> setUp();
 

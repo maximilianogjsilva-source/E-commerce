@@ -32,7 +32,7 @@ public class AuthenticationController {
 
     @PostMapping("/log-in")
     public ResponseEntity<AuthResponse> loginUser(@Validated @RequestBody AuthUserRequest authUserRequest) {
-        return new ResponseEntity<AuthResponse>(authRessponseService.loginUser(authUserRequest) ,HttpStatus.OK);
+        return ResponseEntity.ok(authRessponseService.loginUser(authUserRequest));
     }
 
     @PostMapping("/set-up")

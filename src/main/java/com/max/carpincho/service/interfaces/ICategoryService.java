@@ -2,9 +2,11 @@ package com.max.carpincho.service.interfaces;
 
 import com.max.carpincho.persistence.entity.Category;
 
+import java.util.Optional;
+
 public interface ICategoryService {
 
-    void saveCategoryIfNotExists(String nameCategory);
+    Optional<Category> saveCategoryIfNotExists(String nameCategory);
 
     Category findByName(String name);
 

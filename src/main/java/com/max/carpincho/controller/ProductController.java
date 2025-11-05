@@ -30,14 +30,14 @@ public class ProductController {
 
     @PostMapping("/add-item")
     public ResponseEntity<ProductDTO> addItem(@RequestBody @Validated ProductDTO productDTO){
-        return new ResponseEntity<>(this.responseService.saveProduct(productDTO), HttpStatus.CREATED);
-//        var prodDTO = this.responseService.saveProduct(productDTO);
-//        return ResponseEntity.created(URI.create("/demo/get-id/"+prodDTO.id())).body(prodDTO);
+        var prodDTO = this.responseService.saveProduct(productDTO);
+        return ResponseEntity.created(URI.create("/demo/get-id/"+prodDTO.id())).body(prodDTO);
     }
 
     @GetMapping("/get-id/{id}")
-    public ResponseEntity<ProductDTO> getById(@PathVariable Integer id){
-        return new ResponseEntity<>(this.responseService.getById(id), HttpStatus.OK);
+    public ResponseEntity<?> getById(@PathVariable Integer id){
+        return this.responseService.getById(id).map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/update/{id}")
@@ -48,7 +48,9 @@ public class ProductController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Integer id){
-        return this.responseService.deleteProductById(id);
+        return this.responseService.deleteProductById(id).map((productDTO)->
+                        ResponseEntity.noContent().build())
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/set-up")

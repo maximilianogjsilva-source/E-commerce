@@ -50,7 +50,7 @@ public class ProductServiceTest {
         //When
         when(this.repository.findById( anyInt() ))
                 .thenReturn(Optional.of(DataProvider.getProductId()));
-        Product product = this.service.getById(id);
+        Product product = this.service.getById(id).get();
 
         //Then
         assertNotNull(product);
@@ -129,12 +129,11 @@ public class ProductServiceTest {
         //When
         when(this.repository.findById(anyInt()))
                 .thenReturn(Optional.of(DataProvider.getProduct()));
-        Boolean deleted = this.service.deleteProductById(id);
+        this.service.deleteProductById(id);
 
         //Then
         verify(this.repository).findById( anyInt() );
         verify(this.repository).deleteById( anyInt() );
-        assertTrue(deleted);
 
     }
 
@@ -146,11 +145,10 @@ public class ProductServiceTest {
         //When
         when(this.repository.findById( anyInt() ))
                 .thenReturn(Optional.ofNullable(null));
-        Boolean deleted = this.service.deleteProductById(id);
+        this.service.deleteProductById(id);
 
         //Then
         verify(this.repository).findById( anyInt() );
-        assertFalse(deleted);
 
     }
 

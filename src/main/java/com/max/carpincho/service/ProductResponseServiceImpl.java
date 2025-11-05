@@ -1,6 +1,7 @@
 package com.max.carpincho.service;
 
 import com.max.carpincho.controller.dto.ProductDTO;
+import com.max.carpincho.exception.ProductNotFoundException;
 import com.max.carpincho.persistence.entity.Category;
 import com.max.carpincho.persistence.entity.Product;
 import com.max.carpincho.service.interfaces.ICategoryService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.max.carpincho.service.util.ProductMapper.*;
 
@@ -36,11 +38,10 @@ public class ProductResponseServiceImpl implements IProductResponseService {
     @Override
     public ProductDTO saveProduct(ProductDTO productDTO) {
         //1_Verifico si existen las categorias en BD. 2_Si alguna no existe la guarda en BD
-        productDTO.categories().forEach(categoryService::saveCategoryIfNotExists);
-
         //Se crea la lista de las categorias
         var categories = productDTO.categories().stream()
-                .map(categoryService::findByName).toList();
+                .map((name)->categoryService.saveCategoryIfNotExists(name)
+						.orElseThrow()).toList();
 
         //Se guarda el Product en BD
         var productSaved = this.productService.saveProduct(productWithCategories(productDTO, categories));
@@ -50,19 +51,21 @@ public class ProductResponseServiceImpl implements IProductResponseService {
     }
 
     @Override
-    public ProductDTO getById(Integer id) {
+    public Optional<ProductDTO> getById(Integer id) {
         //Se consulta a BD por el Product segun su Id y se devuelve un ProductDTO
-        return toProductDTO(this.productService.getById(id));
+        return Optional.of(
+				toProductDTO(this.productService.getById(id).orElseThrow(()->
+						new ProductNotFoundException(id))
+				));
     }
 
     @Override
     public ProductDTO editProduct(Integer idProduct, ProductDTO newProductDTO) {
         //1_Verifico si existen las categorias en BD. 2_Si alguna no existe la guarda en BD
-        newProductDTO.categories().forEach(categoryService::saveCategoryIfNotExists);
-
         //Se crea la lista de las categorias
         var categories = newProductDTO.categories().stream()
-                .map(categoryService::findByName).toList();
+                .map((name)->categoryService.saveCategoryIfNotExists(name)
+						.orElseThrow()).toList();
 
         //Se guarda el Product editado en BD
         var productEdited = this.productService.editProduct(idProduct,
@@ -73,11 +76,11 @@ public class ProductResponseServiceImpl implements IProductResponseService {
     }
 
     @Override
-    public ResponseEntity<?> deleteProductById(Integer id) {
-        if (this.productService.deleteProductById(id)){
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public Optional<ProductDTO> deleteProductById(Integer id) {
+        return Optional.of(
+				this.productService.deleteProductById(id).map(ProductMapper::toProductDTO)
+						.orElseThrow(()->new ProductNotFoundException(id))
+		);
     }
 
     @Override

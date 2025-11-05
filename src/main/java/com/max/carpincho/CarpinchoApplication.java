@@ -24,8 +24,4 @@ public class CarpinchoApplication {
 		SpringApplication.run(CarpinchoApplication.class, args);
 	}
 
-//	@Bean
-//	CommandLineRunner init() {
-//		return args -> {};
-//	}
 }

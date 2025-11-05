@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService implements IProductService {
@@ -21,10 +22,10 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Product getById(Integer idProduct) {
-        return this.repository.findById(idProduct).orElseThrow(
+    public Optional<Product> getById(Integer idProduct) {
+        return Optional.of(this.repository.findById(idProduct).orElseThrow(
                 () -> new ProductNotFoundException(idProduct)
-        );
+        ));
     }
 
     @Override
@@ -48,12 +49,13 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Boolean deleteProductById(Integer idProduct) {
-        if (this.repository.findById(idProduct).orElse(null) != null){
-            this.repository.deleteById(idProduct);
-            return true;
-        }
-        return false;
+    public Optional<Product> deleteProductById(Integer idProduct) {
+        return Optional.of(
+                this.repository.findById(idProduct).map((product)->{
+                    repository.delete(product);
+                    return product;
+                }).orElseThrow(()-> new ProductNotFoundException(idProduct))
+        );
     }
 
     @Override

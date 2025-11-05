@@ -19,11 +19,13 @@ public class DataProvider {
 
     public static Product getProduct(){
         System.out.println("--> Devolviendo Optional<Product>/Mock ");
+        Category cat = new Category(1, "clothes");
+        Category rare = new Category(2, "rare");
         return Product.builder()
                 .title("Jean")
                 .srcImg("jean.jpg")
                 .description("Classic Jean")
-                .categories(List.of(new Category(1, "clothes")))
+                .categories(List.of(cat, rare))
                 .price(20500).build();
     }
 
